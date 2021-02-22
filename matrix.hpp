@@ -53,12 +53,12 @@ namespace vpanic {
 	
 		// ------------------------------------
 
-		Matrix operator [] (const uni8 i) const {
+		Vec4 operator [] (const uni8 i) const {
 			assert(i <= 3);
 			return m[i];
 		}
 
-		Matrix& operator [] (const uni8 i) {
+		Vec4& operator [] (const uni8 i) {
 			assert(i <= 3);
 			return m[i];
 		}
