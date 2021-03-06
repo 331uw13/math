@@ -1,9 +1,5 @@
 #pragma once
 
-//
-//  https://github.com/331uw13/math
-//
-
 namespace vpanic {
 
 	struct Vec4 {
@@ -22,31 +18,8 @@ namespace vpanic {
 
 		Vec4() {}
 
-
-		Vec4 operator + (const Vec4& a) {
-			return Vec4(x+a.x, y+a.y, z+a.z, w+a.w);
-		}
-		
-		Vec4& operator += (const Vec4& a) {
-			x += a.x;
-			y += a.y;
-			z += a.z;
-			w += a.w;
-			return *this;
-		}
-
-		Vec4 operator - (const Vec4& a) {
-			return Vec4(x-a.x, y-a.y, z-a.z, w-a.w);
-		}
-		
-		Vec4& operator -= (const Vec4& a) {
-			x -= a.x;
-			y -= a.y;
-			z -= a.z;
-			w -= a.w;
-			return *this;
-		}
-
 	};
 
 }
+
+
