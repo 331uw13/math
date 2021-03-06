@@ -1,5 +1,4 @@
 #pragma once
-#include <cmath>
 
 namespace vpanic {
 
@@ -10,36 +9,39 @@ namespace vpanic {
 		float z  { 0.0f };
 
 
-		Vec3(const float t_xyz)
+		Vec3(const float t_xyz) 
 			: x(t_xyz), y(t_xyz), z(t_xyz) {}
-
-		Vec3(const float t_x, const float t_y, const float t_z)
+		
+		Vec3(const float t_x, const float t_y, const float t_z) 
 			: x(t_x), y(t_y), z(t_z) {}
-
+		
 		Vec3() {}
 
+		
+		float length() const;
+		Vec3 normalize() const;
+		void normalize_self();
+		
+		bool all(const float t) const;
+		bool any(const float t) const;
 
-		bool all(const float v) const {
-			return (x == v && y == v && z == v);
-		}
-
-		float length() const {
-			return sqrt(x*x+y*y+z*z);
-		}
-
-		Vec3 normalize() const {
-			const float l = length();
-			return Vec3(x/l, y/l, z/l);
-		}
-
-		void normalize_self() {
-			const float l = length();
-			x /= l;
-			y /= l;
-			z /= l;
-		}
-
-
+		Vec3  operator -  (const Vec3& a);
+		Vec3  operator -  (const float a);
+		Vec3& operator -= (const Vec3& a);
+		Vec3& operator -= (const float a);
+		Vec3  operator +  (const Vec3& a);
+		Vec3  operator +  (const float a);
+		Vec3& operator += (const Vec3& a);
+		Vec3& operator += (const float a);
+		Vec3  operator /  (const Vec3& a);
+		Vec3  operator /  (const float a);
+		Vec3& operator /= (const Vec3& a);
+		Vec3& operator /= (const float a);
+		Vec3  operator *  (const Vec3& a);
+		Vec3  operator *  (const float a);
+		Vec3& operator *= (const Vec3& a);
+		Vec3& operator *= (const float a);
+	
 	};
 
 }
