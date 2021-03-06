@@ -23,8 +23,6 @@ namespace vpanic {
 
 		Matrix() {}
 		
-		// ------------------------------------
-
 		Matrix operator + (const Matrix& a) {
 			return Matrix(
 					Vec4( m[0].x+a[0].x, m[0].y+a[0].y, m[0].z+a[0].z, m[0].w+a[0].w ),
@@ -87,8 +85,7 @@ namespace vpanic {
 			}
 			return *this;
 		}
-		// ------------------------------------
-
+		
 		Vec4 operator [] (const uni8 i) const {
 			assert(i <= 3);
 			return m[i];
@@ -99,22 +96,9 @@ namespace vpanic {
 			return m[i];
 		}
 
-	   	// ---------------------------
-
 	private:
 		Vec4 m[4];
 	};
-
-		/*
-		 	
-		   1, 2, 3, 4       1, 1, 1, 1
-		   1, 2, 3, 4       2, 2, 2, 2
-		   1, 2, 3, 4       3, 3, 3, 3
-		   1, 2, 3, 4       4, 4, 4, 4
-
-		*/
-
-	// --------- matrix transformations --------------
 
 	void translate(Matrix& mat, const Vec3& pos) {
 		mat[3] = Vec4(
