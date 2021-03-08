@@ -16,6 +16,10 @@ namespace vpanic {
 		return sqrt(x*x+y*y+z*z);
 	}
 
+	Vec3 Vec3::invert() const {
+		return Vec3(-x, -y, -z);
+	}
+	
 	Vec3 Vec3::normalize() const {
 		const float l = length();
 		return Vec3(x/l, y/l, z/l);

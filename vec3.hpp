@@ -20,9 +20,11 @@ namespace vpanic {
 
 		
 		float length() const;
+		Vec3 invert() const;
 		Vec3 normalize() const;
 		void normalize_self();
 		
+
 		bool all(const float t) const;
 		bool any(const float t) const;
 
