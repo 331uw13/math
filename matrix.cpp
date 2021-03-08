@@ -60,13 +60,13 @@ namespace vpanic {
 	}
 	
 	Matrix Matrix::operator * (const Matrix& a) const {
-		Matrix tmp(m[0], m[1], m[2], m[3]);
+		Matrix tmp;
 		for(int i = 0; i < 4; i++) {
-			tmp[i] = Vec4( 
-					tmp[i].x*a[0].x + tmp[i].y*a[1].x + tmp[i].z*a[2].x + tmp[i].w*a[3].x,
-					tmp[i].x*a[0].y + tmp[i].y*a[1].y + tmp[i].z*a[2].y + tmp[i].w*a[3].y,
-					tmp[i].x*a[0].z + tmp[i].y*a[1].z + tmp[i].z*a[2].z + tmp[i].w*a[3].z,
-					tmp[i].x*a[0].w + tmp[i].y*a[1].w + tmp[i].z*a[2].w + tmp[i].w*a[3].w
+			tmp[i] = Vec4(
+					m[0].x*a[i].x + m[1].x*a[i].y + m[2].x*a[i].z + m[3].x*a[i].w,
+					m[0].y*a[i].x + m[1].y*a[i].y + m[2].y*a[i].z + m[3].y*a[i].w,
+					m[0].z*a[i].x + m[1].z*a[i].y + m[2].z*a[i].z + m[3].z*a[i].w,
+					m[0].w*a[i].x + m[1].w*a[i].y + m[2].w*a[i].z + m[3].w*a[i].w
 					);
 		}
 		return tmp;
@@ -75,10 +75,10 @@ namespace vpanic {
 	Matrix& Matrix::operator *= (const Matrix& a) {
 		for(int i = 0; i < 4; i++) {
 			m[i] = Vec4( 
-					m[i].x*a[0].x + m[i].y*a[1].x + m[i].z*a[2].x + m[i].w*a[3].x,
-					m[i].x*a[0].y + m[i].y*a[1].y + m[i].z*a[2].y + m[i].w*a[3].y,
-					m[i].x*a[0].z + m[i].y*a[1].z + m[i].z*a[2].z + m[i].w*a[3].z,
-					m[i].x*a[0].w + m[i].y*a[1].w + m[i].z*a[2].w + m[i].w*a[3].w
+					m[0].x*a[i].x + m[1].y*a[i].x + m[2].z*a[i].x + m[3].w*a[i].x,
+					m[0].x*a[i].y + m[1].y*a[i].y + m[2].z*a[i].y + m[3].w*a[i].y,
+					m[0].x*a[i].z + m[1].y*a[i].z + m[2].z*a[i].z + m[3].w*a[i].z,
+					m[0].x*a[i].w + m[1].y*a[i].w + m[2].z*a[i].w + m[3].w*a[i].w
 					);
 		}
 		return *this;
@@ -162,10 +162,13 @@ namespace vpanic {
 		m[3] = last;
 	}
 
+	float* Matrix::begin() const {
+		return (float*)&m[0].x;
+	}
 	
 	// ---------------------------------
 
-	void projection(Matrix& t_mat, const float t_fov, const float t_aspect_ratio, const float t_znear, const float t_zfar) {
+	void get_projection(Matrix& t_mat, const float t_fov, const float t_aspect_ratio, const float t_znear, const float t_zfar) {
 		
 		// https://www.youtube.com/watch?v=ih20l3pJoeU (16:00 - 28:20)  javidx9 explained this very well, thanks!
 

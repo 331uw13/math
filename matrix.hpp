@@ -26,6 +26,7 @@ namespace vpanic {
 		void scale(const Vec3& vec);
 		void rotate(const Vec3& r, const float angle);
 
+		float* begin() const;
 	
 	private:
 
@@ -33,7 +34,7 @@ namespace vpanic {
 
 	};
 
-	void projection(Matrix& t_mat, const float t_fov, const float t_aspect_ratio, const float t_znear, const float t_zfar);
+	void get_projection(Matrix& t_mat, const float t_fov, const float t_aspect_ratio, const float t_znear, const float t_zfar);
 
 }
 

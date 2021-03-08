@@ -30,20 +30,20 @@ namespace vpanic {
 
 		Vec2 xy() const { return Vec2(x, y); }
 
-		Vec3  operator -  (const Vec3& a);
-		Vec3  operator -  (const float a);
+		Vec3  operator -  (const Vec3& a) const;
+		Vec3  operator -  (const float a) const;
 		Vec3& operator -= (const Vec3& a);
 		Vec3& operator -= (const float a);
-		Vec3  operator +  (const Vec3& a);
-		Vec3  operator +  (const float a);
+		Vec3  operator +  (const Vec3& a) const;
+		Vec3  operator +  (const float a) const;
 		Vec3& operator += (const Vec3& a);
 		Vec3& operator += (const float a);
-		Vec3  operator /  (const Vec3& a);
-		Vec3  operator /  (const float a);
+		Vec3  operator /  (const Vec3& a) const;
+		Vec3  operator /  (const float a) const;
 		Vec3& operator /= (const Vec3& a);
 		Vec3& operator /= (const float a);
-		Vec3  operator *  (const Vec3& a);
-		Vec3  operator *  (const float a);
+		Vec3  operator *  (const Vec3& a) const;
+		Vec3  operator *  (const float a) const;
 		Vec3& operator *= (const Vec3& a);
 		Vec3& operator *= (const float a);
 	
