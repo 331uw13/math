@@ -1,4 +1,5 @@
 #pragma once
+#include "vec2.hpp"
 
 namespace vpanic {
 
@@ -24,6 +25,8 @@ namespace vpanic {
 		
 		bool all(const float t) const;
 		bool any(const float t) const;
+
+		Vec2 xy() const { return Vec2(x, y); }
 
 		Vec3  operator -  (const Vec3& a);
 		Vec3  operator -  (const float a);

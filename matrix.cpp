@@ -1,8 +1,8 @@
-#include <cmath>
+//#include <cmath>
 #include <cassert>
 
 #include "matrix.hpp"
-
+#include "math.hpp"
 
 namespace vpanic {
 
@@ -21,7 +21,7 @@ namespace vpanic {
 		m[3] = d;
 	}
 
-	Matrix Matrix::operator + (const Matrix& a) {
+	Matrix Matrix::operator + (const Matrix& a) const {
 		return Matrix(
 				Vec4( m[0].x+a[0].x, m[0].y+a[0].y, m[0].z+a[0].z, m[0].w+a[0].w ),
 				Vec4( m[1].x+a[1].x, m[1].y+a[1].y, m[1].z+a[1].z, m[1].w+a[1].w ),
@@ -40,7 +40,7 @@ namespace vpanic {
 		return *this;
 	}
 
-	Matrix Matrix::operator - (const Matrix& a) {
+	Matrix Matrix::operator - (const Matrix& a) const {
 		return Matrix(
 				Vec4( m[0].x-a[0].x, m[0].y-a[0].y, m[0].z-a[0].z, m[0].w-a[0].w ),
 				Vec4( m[1].x-a[1].x, m[1].y-a[1].y, m[1].z-a[1].z, m[1].w-a[1].w ),
@@ -59,7 +59,7 @@ namespace vpanic {
 		return *this;
 	}
 	
-	Matrix Matrix::operator * (const Matrix& a) {
+	Matrix Matrix::operator * (const Matrix& a) const {
 		Matrix tmp(m[0], m[1], m[2], m[3]);
 		for(int i = 0; i < 4; i++) {
 			tmp[i] = Vec4( 
@@ -96,46 +96,44 @@ namespace vpanic {
 
 	// -----------------------------
 
-	void translate(Matrix& mat, const Vec3& pos) {
-		mat[3] = Vec4(
-				mat[0].x*pos.x + mat[1].x*pos.y + mat[2].x*pos.z + mat[3].x,
-				mat[0].y*pos.x + mat[1].y*pos.y + mat[2].y*pos.z + mat[3].y,
-				mat[0].z*pos.x + mat[1].z*pos.y + mat[2].z*pos.z + mat[3].z,
-				mat[0].w*pos.x + mat[1].w*pos.y + mat[2].w*pos.z + mat[3].w
+	void Matrix::translate(const Vec3& pos) {
+		m[3] = Vec4(
+				m[0].x*pos.x + m[1].x*pos.y + m[2].x*pos.z + m[3].x,
+				m[0].y*pos.x + m[1].y*pos.y + m[2].y*pos.z + m[3].y,
+				m[0].z*pos.x + m[1].z*pos.y + m[2].z*pos.z + m[3].z,
+				m[0].w*pos.x + m[1].w*pos.y + m[2].w*pos.z + m[3].w
 				);
 	}
 
-	void scale(Matrix& mat, const Vec3& vec) {
-		mat[0].x *= vec.x;
-		mat[0].y *= vec.x;
-		mat[0].z *= vec.x;
-		mat[0].w *= vec.x;
-		mat[1].x *= vec.y;
-		mat[1].y *= vec.y;
-		mat[1].z *= vec.y;
-		mat[1].w *= vec.y;
-		mat[2].x *= vec.z;
-		mat[2].y *= vec.z;
-		mat[2].z *= vec.z;
-		mat[2].w *= vec.z;
+	void Matrix::scale(const Vec3& vec) {
+		m[0].x *= vec.x;
+		m[0].y *= vec.x;
+		m[0].z *= vec.x;
+		m[0].w *= vec.x;
+		m[1].x *= vec.y;
+		m[1].y *= vec.y;
+		m[1].z *= vec.y;
+		m[1].w *= vec.y;
+		m[2].x *= vec.z;
+		m[2].y *= vec.z;
+		m[2].z *= vec.z;
+		m[2].w *= vec.z;
 	}
 
-	void rotate(Matrix& mat, const Vec3& r, const float angle) {		
+	void Matrix::rotate(const Vec3& r, const float angle) {		
 		
-		Matrix rm(mat[0], mat[1], mat[2], mat[3]);
+		Matrix rm(m[0], m[1], m[2], m[3]);
 		Matrix res(1.0f);
 		
 		// i have to admit that i got stuck here and had to check how they did it in glm
 		// source: https://github.com/g-truc/glm/blob/64be09e1b1390ddcd0f79f38531855a9de26ad1f/glm/ext/matrix_transform.inl#L18
 		
-		const float c = cos(angle);
-		const float s = sin(angle);
+		const float a = to_radians(angle);
+		const float c = cos(a);
+		const float s = sin(a);
 		const Vec3 n = r.normalize();
 		Vec3 i(1.0f-c);
-	
-		i.x *= n.x;
-		i.y *= n.y;
-		i.z *= n.z;
+		i *= n;
 
 		rm[0].x = c + i.x * n.x;
 		rm[0].y = i.x * n.y + s * n.z;
@@ -149,17 +147,47 @@ namespace vpanic {
 		rm[2].y = i.z * n.y - s * n.x;
 		rm[2].z = c + i.z * n.z;
 
+		Vec4 last = m[3];
+
 		for(int i = 0; i < 4; i++) {
 			res[i] = Vec4( 
-					mat[0].x*rm[i].x + mat[1].x*rm[i].y + mat[2].x*rm[i].z,
-					mat[0].y*rm[i].x + mat[1].y*rm[i].y + mat[2].y*rm[i].z,
-					mat[0].z*rm[i].x + mat[1].z*rm[i].y + mat[2].z*rm[i].z,
-					mat[i].w
+					m[0].x*rm[i].x + m[1].x*rm[i].y + m[2].x*rm[i].z,
+					m[0].y*rm[i].x + m[1].y*rm[i].y + m[2].y*rm[i].z,
+					m[0].z*rm[i].x + m[1].z*rm[i].y + m[2].z*rm[i].z,
+					m[0].w*rm[i].x + m[1].w*rm[i].y + m[2].w*rm[i].z
 					);
 		}
+	
+		*this = res;
+		m[3] = last;
+	}
 
-		mat = res;
+	
+	// ---------------------------------
+
+	void projection(Matrix& t_mat, const float t_fov, const float t_aspect_ratio, const float t_znear, const float t_zfar) {
+		
+		// https://www.youtube.com/watch?v=ih20l3pJoeU (16:00 - 28:20)  javidx9 explained this very well, thanks!
+
+		const float f = tan(to_radians(t_fov)/2.0f);
+		const float zd = t_zfar-t_znear;
+
+		Matrix p(1.0f);
+		p[0].x = 1.0f/(f*t_aspect_ratio);
+		p[1].y = 1.0f/f;
+		p[2].z = -(t_zfar+t_znear)/zd;
+		p[3].z = -(2.0f*t_zfar*t_znear)/zd;
+		p[2].w = -1.0f;
+		p[3].w = 0.0f;
+
+		t_mat = p;
 	}
 
 
+
 }
+
+
+
+
+

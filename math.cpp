@@ -3,6 +3,10 @@
 
 namespace vpanic {
 
+	float to_radians(const float a) {
+		return a*(M_PI/180.f);
+	}
+
 	float angle_between(const Vec3& a, const Vec3& b) {
 		return (a.x*b.x + a.y*b.y + a.z*b.z) / (a.length()*b.length());
 	}
